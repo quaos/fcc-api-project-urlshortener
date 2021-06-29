@@ -1,6 +1,8 @@
 const { response } = require('express');
 const express = require('express');
 
+const ALLOWED_PROTOCOLS = ['http', 'https'];
+
 function urlShortenerController(urlShortenerService, opts = {}) {
     const router = new express.Router({ mergeParams: true });
 
@@ -31,6 +33,9 @@ function urlShortenerController(urlShortenerService, opts = {}) {
 
             try {
                 const _parsedUrl = new URL(url);
+                if (ALLOWED_PROTOCOLS.indexOf(_parsedUrl.protocol) < 0) {
+                    throw new Error(`Invalid Protocol: ${_parsedUrl.protocol}`);
+                }
             } catch (err) {
                 console.log(`Invalid URL: ${url}`, err.message);
                 const err2 = new Error('invalid url');
