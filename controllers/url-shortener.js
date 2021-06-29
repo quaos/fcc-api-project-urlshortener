@@ -20,7 +20,8 @@ function urlShortenerController(urlShortenerService, opts = {}) {
 
     router.post('/', async (req, resp, next) => {
         try {
-            console.log(req);
+            //TEST
+            // console.log(req);
             const url = (req.body) ? req.body.url : undefined;
             if (!url) {
                 const err = new Error('invalid url');

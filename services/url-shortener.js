@@ -1,3 +1,4 @@
+const dns = require('dns');
 const randomstring = require('randomstring');
 const fetch = require('node-fetch');
 
@@ -46,6 +47,21 @@ function urlShortenerService(opts = {}) {
             const key = await generateKey();
             const expDate = new Date(new Date().getTime() + maxAge * 1000);
 
+            let ipAddress;
+            try {
+                const urlImpl = new URL(url);
+                ipAddress = await dns.promises.lookup(urlImpl.hostname)
+                    .then((result) => {
+                        console.log(`DNS: ${urlImpl.hostname} =>`, result);
+                        return result.address;
+                    });
+            } catch (err) {
+                console.error(err);
+                const err2 = new Error("Invalid Hostname");
+                err2.statusCode = 400;
+                throw err2;
+            }
+
             let checkResp;
             try {
                 checkResp = await fetch(url, {
@@ -59,6 +75,7 @@ function urlShortenerService(opts = {}) {
             const data = {
                 key,
                 url,
+                ipAddress,
                 respStatus: checkResp.status,
                 contentType: (checkResp.headers)
                     ? checkResp.headers.get('content-type')
