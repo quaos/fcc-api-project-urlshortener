@@ -33,8 +33,9 @@ function urlShortenerController(urlShortenerService, opts = {}) {
 
             try {
                 const _parsedUrl = new URL(url);
-                if (ALLOWED_PROTOCOLS.indexOf(_parsedUrl.protocol) < 0) {
-                    throw new Error(`Invalid Protocol: ${_parsedUrl.protocol}`);
+                const protocol = _parsedUrl.protocol.replace(/:$/, '');
+                if (ALLOWED_PROTOCOLS.indexOf(protocol) < 0) {
+                    throw new Error(`Invalid Protocol: ${protocol}`);
                 }
             } catch (err) {
                 console.log(`Invalid URL: ${url}`, err.message);
