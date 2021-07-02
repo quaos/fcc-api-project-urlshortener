@@ -27,7 +27,8 @@ function urlShortenerController(urlShortenerService, opts = {}) {
             const url = (req.body) ? req.body.url : undefined;
             if (!url) {
                 const err = new Error('invalid url');
-                err.statusCode = 400;
+                //From challenge's requirement
+                err2.statusCode = 200; //400;
                 throw err;
             }
 
@@ -40,7 +41,8 @@ function urlShortenerController(urlShortenerService, opts = {}) {
             } catch (err) {
                 console.log(`Invalid URL: ${url}`, err.message);
                 const err2 = new Error('invalid url');
-                err2.statusCode = 400;
+                //From challenge's requirement
+                err2.statusCode = 200; //400;
                 throw err2;
             }
 

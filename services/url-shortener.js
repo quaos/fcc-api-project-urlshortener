@@ -58,7 +58,8 @@ function urlShortenerService(opts = {}) {
             } catch (err) {
                 console.error(err);
                 const err2 = new Error("Invalid Hostname");
-                err2.statusCode = 400;
+                //From challenge's requirement
+                err2.statusCode = 200; //400;
                 throw err2;
             }
 
